@@ -8,16 +8,27 @@ import sys
 
 class CelestialBody:
     def __init__(self, name, mass, x, y, vx, vy, radius, color):
-        # 이름, 질량, 위치, 속도, 반지름, 색상 저장
-        pass
+        self.name = name
+        self.mass = mass
+        self.x = x
+        self.y = y
+        self.vx = vx
+        self.vy = vy
+        self.radius = radius
+        self.color = color
 
     def apply_force(self, fx, fy, dt):
-        # 힘을 받아 속도 갱신
-        pass
+        # 가속도 계산
+        ax = fx / self.mass
+        ay = fy / self.mass
+
+        # 속도 갱신
+        self.vx += ax * dt
+        self.vy += ay * dt
 
     def update_position(self, dt):
-        # 속도에 따라 위치 갱신
-        pass
+        self.x += self.vx * dt
+        self.y += self.vy * dt
 
     def record_path(self):
         # 현재 위치를 궤도 리스트에 추가
@@ -25,6 +36,7 @@ class CelestialBody:
 
     def draw(self, screen):
         # 화면에 천체와 궤도를 그림
+
         pass
 
 
