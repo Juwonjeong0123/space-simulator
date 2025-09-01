@@ -2,8 +2,6 @@
 # 라이브러리
 # ====================
 import math
-import matplotlib
-matplotlib.use('TkAgg') # 또는 'Gtk3Agg', 'Qt5Agg' 등
 import matplotlib.pyplot as plt
 
 # ====================
@@ -70,8 +68,6 @@ class CelestialBody:
         self.pos = pos
         self.v = v
         self.color = color
-        self.positions = [] # 궤적을 저장할 리스트 추가
-        self.positions.append((self.pos.x, self.pos.y)) # 초기 위치 저장
 
 def force(c1, c2):
     r_vec = c2.pos - c1.pos # 두 물체 간의 거리 벡터
@@ -96,15 +92,12 @@ def new_pos(c, u, dt):
     pos = c.pos + u * dt
     return pos
 
-dt = 3600
-num_steps = 365 * 24 * 1 # 1년 시뮬레이션 (하루 24시간, 1년 365일)
+dt = 0.001
 
 sun = CelestialBody("sun", 1.989e30, 1392684, Vector2(0, 0), Vector2(0, 0), "red")
 
-# earth_pos = Vector2(149.6e9, 0) # 초기 위치 (x축)
 earth_pos = Vector2(149.6e9, 0) # 초기 위치 (x축)
-#earth_vel = Vector2(0, 29.8e3)  # 초기 속도 (y축)
-earth_vel = Vector2(0, 298e3)  # 초기 속도 (y축)
+earth_vel = Vector2(0, 29.8e3)  # 초기 속도 (y축)
 
 earth = CelestialBody("earth", 5.9722e24, 12756, earth_pos, earth_vel, "blue")
 
@@ -115,30 +108,8 @@ def update():
     earth.pos = earth.pos + earth.v * dt
     
     print(earth.pos.x, earth.pos.y)
-    earth.positions.append((earth.pos.x, earth.pos.y))
-    sun.positions.append((sun.pos.x, sun.pos.y))
 
-for i in range(num_steps):
+for i in range(30):
     update()
 
 # """
-
-# 태양 궤적 (점이 될 것임)
-sun_x = [p[0] for p in sun.positions]
-sun_y = [p[1] for p in sun.positions]
-plt.plot(sun_x, sun_y, color=sun.color, marker='o', markersize=8, label=sun.name) # 태양은 큰 점으로 표시
-
-# 지구 궤적
-earth_x = [p[0] for p in earth.positions]
-earth_y = [p[1] for p in earth.positions]
-plt.plot(earth_x, earth_y, color=earth.color, label=earth.name)
-
-plt.xlabel("X (m)")
-plt.ylabel("Y (m)")
-plt.title("2D 천체 궤도 시뮬레이션")
-plt.grid(True)
-plt.gca().set_aspect('equal', adjustable='box') # x, y 축 스케일을 동일하게 설정하여 원형 궤도를 원형으로 보이게 함
-plt.legend()
-plt.show()
-
-
